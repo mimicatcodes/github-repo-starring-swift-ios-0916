@@ -6,6 +6,7 @@ target 'github-repo-starring-swift' do
   use_frameworks!
 
   pod 'OHHTTPStubs'
+  pod 'Alamofire'
 
   # Pods for github-repo-starring-swift
 

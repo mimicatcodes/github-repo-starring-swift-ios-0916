@@ -1,10 +1,4 @@
-//
-//  GithubAPIClientSpec.swift
-//  github-repo-starring-swift
-//
-//  Created by Haaris Muneer on 7/26/16.
-//  Copyright © 2016 Flatiron School. All rights reserved.
-//
+
 
 import Quick
 import Nimble
@@ -79,7 +73,7 @@ class GithubAPIClientSpec: QuickSpec {
 
                 }
                 waitUntil(action: { (done) in
-                    GithubAPIClient.checkIfRepositoryIsStarred("wycats/merb-core", completion: { (starred) in
+                    GithubAPIClient.checkIfRepositoryIsStarred(fullName: "wycats/merb-core", completion: { (starred) in
                         expect(starred).to(beFalsy())
                         done()
                     })
@@ -95,7 +89,7 @@ class GithubAPIClientSpec: QuickSpec {
                     
                 }
                 waitUntil(action: { (done) in
-                    GithubAPIClient.checkIfRepositoryIsStarred("wycats/merb-core", completion: { (starred) in
+                    GithubAPIClient.checkIfRepositoryIsStarred(fullName: "wycats/merb-core", completion: { (starred) in
                         expect(starred).to(beTruthy())
                         done()
                     })

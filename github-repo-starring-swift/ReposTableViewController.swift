@@ -1,12 +1,7 @@
-//
-//  ReposTableViewController.swift
-//  github-repo-starring-swift
-//
-//  Created by Haaris Muneer on 6/28/16.
-//  Copyright © 2016 Flatiron School. All rights reserved.
-//
+
 
 import UIKit
+
 
 class ReposTableViewController: UITableViewController {
     
@@ -40,5 +35,27 @@ class ReposTableViewController: UITableViewController {
 
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let repo = store.repositories[indexPath.row]
+        let repoName = repo.fullName
+        store.toggleStarStatus(for: repoName) { (isStarred) in
+            if isStarred == true {
+               let starredAlert = UIAlertController(title: "Starred", message: "You just starrd \(repoName)", preferredStyle: .alert )
+               let starredAction = UIAlertAction(title: "Dismiss", style: .default, handler: nil)
+                starredAlert.addAction(starredAction)
+                self.present(starredAlert, animated: true, completion: nil)
+                
+            } else {
+                let unstarredAlert = UIAlertController(title: "Unstarred", message: "You just unstarrd \(repoName)", preferredStyle: .alert )
+                let unstarredAction = UIAlertAction(title: "Dismiss", style: .default, handler: nil)
+                unstarredAlert.addAction(unstarredAction)
+                self.present(unstarredAlert, animated: true, completion: nil)
+            }
+        }
+        
+    }
+    
+
 
 }
