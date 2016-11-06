@@ -10,11 +10,11 @@ class GithubAPIClientSpec: QuickSpec {
     var starred = false
     
     override func spec() {
-        
+        typealias JSON = [String:Any]
         guard let path = Bundle(for: type(of: self)).path(forResource: "repositories", ofType: "json") else { print("error getting the path"); return }
         
         guard let data = try? Data(contentsOf: URL(fileURLWithPath: path)) else { print("error getting data"); return }
-        let repositoryArray = try? JSONSerialization.jsonObject(with: data, options: []) as! NSArray
+        let repositoryArray = try? JSONSerialization.jsonObject(with: data, options: []) as! [JSON]
         
         //stubbing GET repositories
         OHHTTPStubs.stubRequests(passingTest: { (request) -> Bool in

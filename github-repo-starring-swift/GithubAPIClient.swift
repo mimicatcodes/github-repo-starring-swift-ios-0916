@@ -73,7 +73,7 @@ class GithubAPIClient {
             
             if httpResponse.statusCode == 204 {
                 isStarred = true
-                completion(isStarred)
+
             } else if httpResponse.statusCode == 404{
                 isStarred = false
             }
@@ -108,6 +108,7 @@ class GithubAPIClient {
             
             completion()
         }
+        
         dataTask.resume()
         
     }
