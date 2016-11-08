@@ -15,8 +15,7 @@ class ReposDataStore {
         GithubAPIClient.getRepositories{ (reposArray) in
             self.repositories.removeAll()
             for dictionary in reposArray {
-                guard let repoDictionary = dictionary as? [String:Any] else{ fatalError("Object in reposArray is of non-dictionary type") }
-                let repository = GithubRepository(dictionary: repoDictionary)
+                let repository = GithubRepository(dictionary: dictionary)
                 self.repositories.append(repository)
             }
             completion()

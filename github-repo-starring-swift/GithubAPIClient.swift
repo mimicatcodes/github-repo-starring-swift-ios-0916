@@ -21,10 +21,8 @@ class GithubAPIClient {
         let dataTask = session.dataTask(with: request, completionHandler: { (data, response, error) in
             guard let data = data else { fatalError("Unable to get data \(error?.localizedDescription)") }
             
-            let jsonArray : [JSON]
-            
             do {
-                jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as! [JSON]
+                let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as! [JSON]
                 completion(jsonArray)
             } catch {
                 print("ERROR")
@@ -73,7 +71,7 @@ class GithubAPIClient {
             
             if httpResponse.statusCode == 204 {
                 isStarred = true
-
+                
             } else if httpResponse.statusCode == 404{
                 isStarred = false
             }
@@ -82,7 +80,7 @@ class GithubAPIClient {
             // call this function inside the task
         }
         task.resume()
-
+        
         // Data task runs asynchronously (Closures are not asynchronous)
         // if we don't kick of the task, nothing will happen! Start the task!
         
@@ -106,7 +104,11 @@ class GithubAPIClient {
         
         let dataTask = session.dataTask(with: request) { (data, response, error) in
             
-            completion()
+            guard let response = response as? HTTPURLResponse else { return }
+            
+            if response.statusCode == 204 {
+                completion()
+            }
         }
         
         dataTask.resume()
@@ -115,22 +117,28 @@ class GithubAPIClient {
     
     class func unstarRepository(fullName: String, completion:@escaping ()->()){
         
-            let urlString = "https://api.github.com/user/starred/\(fullName)?access_token=\(Secrets.personalToken)"
+        let urlString = "https://api.github.com/user/starred/\(fullName)?access_token=\(Secrets.personalToken)"
+        
+        let url = URL(string: urlString)
+        
+        guard let unwrappedUrl = url else{ return }
+        
+        let session = URLSession.shared
+        
+        var request = URLRequest(url: unwrappedUrl)
+        
+        request.httpMethod = "PUT"
+        
+        let dataTask = session.dataTask(with: request) { (data, response, error) in
+            guard let response = response as? HTTPURLResponse else { return }
             
-            let url = URL(string: urlString)
-            
-            guard let unwrappedUrl = url else{return}
-            
-            let session = URLSession.shared
-            
-            var request = URLRequest(url: unwrappedUrl)
-            request.httpMethod = "PUT"
-            
-            let dataTask = session.dataTask(with: request) { (data, response, error) in
+            if response.statusCode == 204 {
                 completion()
             }
-            dataTask.resume()
         }
+        
+        dataTask.resume()
+    }
     
 }
 
